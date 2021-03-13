@@ -10,14 +10,15 @@ class BaseAgent:
         # https://github.com/openai/gym/blob/master/gym/envs/classic_control/mountain_car.py
         self._state_bins = [
             # Cart Position
-            self._discretize(lb=-2.4, ub=2.4, n_bins=n_bins),
+            self._discretize(lb=-1.2, ub=0.6, n_bins=n_bins),
             # Cart Velocity
-            self._discretize(lb=-30.0, ub=30.0, n_bins=n_bins),
+            self._discretize(lb=-0.07, ub=0.07, n_bins=n_bins),
         ]
 
         self.n_states = n_bins ** len(self._state_bins)
-        self.n_actions = 2
-        self.q_table = np.ones((self.n_states, self.n_actions)) * 0.5
+        # self.n_states = 10 * 10
+        self.n_actions = env.action_space.n
+        self.q_table = np.random.uniform(low=-1, high=1, size = (self.n_states, self.n_actions))
         self.c = np.zeros((self.n_states, self.n_actions))
         self.gamma = gamma
 
