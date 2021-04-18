@@ -92,6 +92,7 @@ class McControlAgent(BaseAgent):
                 print(f"Iteration {ep}: score = {score}")
 
     def test(self, n_test_iterations, render):
+        test_scores = []
         for i in range(n_test_iterations):
             s_curr = self.env.reset()
             done = False
@@ -102,7 +103,9 @@ class McControlAgent(BaseAgent):
                 s_next, r, done, _ = self.env.step(int(action))
                 score += r
                 s_curr = s_next
+            test_scores.append(score)
             print(f"test score: {score}")
+        return sum(test_scores) / n_test_iterations
 
     def generate_plot(self, name):
         x_axis = [i for i in range(len(self.test_scores))]
@@ -110,4 +113,4 @@ class McControlAgent(BaseAgent):
         experiment = pd.DataFrame(data=d)
         plot = sns.lineplot(data=experiment, x="iteration", y="scores")
         plot.set_title(f"Score of {name} on Discretized MountainCar")
-        plot.figure.savefig("Score_vs_Iteration.png")
+        plot.figure.savefig("Score_vs_Iteration_mc_control.png")
